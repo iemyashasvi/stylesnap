@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:stylesnap/login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
@@ -8,6 +10,30 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  String name="";
+  String email='';
+  String pass="";
+  TextEditingController namecontroller=new TextEditingController();
+  TextEditingController passcontroller=new TextEditingController();
+  TextEditingController emailcontroller=new TextEditingController();
+  final _formkey=GlobalKey<FormState>();
+
+  registration()async{
+    if (pass!=null && namecontroller.text!="" && emailcontroller.text!=""){
+      try{
+        UserCredential userCredential=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pass);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Regestered Successfully')));
+      }on FirebaseAuthException catch(e){
+        if (e.code=="weak-password"){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Too weak Password')));
+        }else if(e.code=="email-already-in-use"){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Account Already Exists')));
+
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,103 +66,138 @@ class _SignUpState extends State<SignUp> {
                     top:MediaQuery.of(context).size.height*0.26,
                     right: 20
                 ),
-                child:Column(
+                child:Form(
+                  key:_formkey,
+                  child: Column(
+                  
+                    children: [
+                  
+                      Text("Name" ,style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Poppins'
+                  
+                  
+                      ),),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                          validator: (value){
+                            if (value==null||value.isEmpty){
+                              return 'Please Enter Name';
+                            }
+                            return null;
+                          },
+                          controller: namecontroller,
+                          decoration:InputDecoration(
+                              hintText: 'Enter Your Name ',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10)
+                              )
+                          )
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text("Email" ,style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Poppins'
+                  
+                  
+                      ),),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                          validator: (value){
+                            if (value==null||value.isEmpty){
+                              return 'Please Enter Email';
+                            }
+                            return null;
+                          },
+                          controller: emailcontroller,
+                          decoration:InputDecoration(
+                  
+                              hintText: 'Enter Your Email ',
+                              border: OutlineInputBorder(
+                  
+                                  borderRadius: BorderRadius.circular(10)
+                              )
+                          )
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text("Password" ,style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Poppins'
+                  
+                  
+                      ),),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                          validator: (value){
+                            if (value==null||value.isEmpty){
+                              return 'Please Enter Password';
+                            }
+                            return null;
+                          },
+                          controller: passcontroller,
+                          obscureText: true,
+                          decoration:InputDecoration(
+                  
+                              hintText: 'Must be 8 characters ',
+                              border: OutlineInputBorder(
+                  
+                                  borderRadius: BorderRadius.circular(10)
+                              )
+                          )
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            height:56,
+                            width: 353,
+                            child: TextButton(
+                                child:Text('Sign Up',style: TextStyle(fontSize: 16)),
+                  
+                                style: ButtonStyle(
+                  
+                                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10.0),
+                  
+                                        )
+                                    )
+                                ),
+                                onPressed:(){
+                                  if(_formkey.currentState!.validate()){
+                                    setState(() {
+                                      email=emailcontroller.text;
+                                      pass=passcontroller.text;
+                                      name=namecontroller.text;
+                                    });
+                                  }
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Btn')));
 
-                  children: [
-
-                    Text("Email" ,style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Poppins'
+                                  registration();
 
 
-                    ),),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextField(
-                        decoration:InputDecoration(
-                            hintText: 'Enter Your Email ',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)
-                            )
-                        )
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(" Create Password" ,style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Poppins'
 
-
-                    ),),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextField(
-                        obscureText: true,
-                        decoration:InputDecoration(
-
-                            hintText: 'Must be 8 characters ',
-                            border: OutlineInputBorder(
-
-                                borderRadius: BorderRadius.circular(10)
-                            )
-                        )
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text("Confirm Password" ,style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Poppins'
-
-
-                    ),),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextField(
-                        obscureText: true,
-                        decoration:InputDecoration(
-
-                            hintText: 'Repeat Password ',
-                            border: OutlineInputBorder(
-
-                                borderRadius: BorderRadius.circular(10)
-                            )
-                        )
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          height:56,
-                          width: 353,
-                          child: TextButton(
-                              child:Text('Sign Up',style: TextStyle(fontSize: 16)),
-
-                              style: ButtonStyle(
-
-                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10.0),
-
-                                      )
-                                  )
-                              ),
-                              onPressed:(){
-                                Navigator.pushNamed(context, 'signup');
-                              }),
-                        )
-                      ],
-                    )
-
-                  ],
+                                }),
+                          )
+                        ],
+                      )
+                  
+                    ],
+                  ),
                 )
             ),
           )
