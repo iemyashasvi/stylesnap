@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({super.key});
@@ -8,6 +9,35 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
+  String emaillogin="";
+  String passlogin="";
+  TextEditingController emailcontroller=new TextEditingController();
+  TextEditingController passcontroller=new TextEditingController();
+  final _formkey=GlobalKey<FormState>();
+  login()async{
+    if (emaillogin!=null && passlogin!=null && emailcontroller.text!=null && passcontroller.text!=null){
+      try{final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emaillogin,
+          password: passlogin
+
+      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Signed In')));
+
+      }on FirebaseAuthException catch (e){
+        if (e.code == 'user-not-found'){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User Not found')));
+
+        }else if(e.code == 'invalid-credential'){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Wrong password or email')));
+        }
+        else{
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.code)));
+
+        }
+      }
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,86 +65,113 @@ class _MyLoginState extends State<MyLogin> {
                ),
              ),
              SingleChildScrollView(
-               child: Container(
-                   padding: EdgeInsets.only(left:20,
-                     top:MediaQuery.of(context).size.height*0.26,
-                     right: 20
-                   ),
-                   child:Column(
+               child: Form(
+                 key:_formkey,
+                 child: Container(
+                     padding: EdgeInsets.only(left:20,
+                       top:MediaQuery.of(context).size.height*0.26,
+                       right: 20
+                     ),
+                     child:Column(
 
-                    children: [
+                      children: [
 
-                      Text("Email" ,style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Poppins'
-
-
-                      ),),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextField(
-                        decoration:InputDecoration(
-                         hintText: 'Enter Your Email ',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)
-                          )
-                        )
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text("Password" ,style: TextStyle(
+                        Text("Email" ,style: TextStyle(
                           fontSize: 14,
                           fontFamily: 'Poppins'
 
 
-                      ),),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextField(
-                          obscureText: true,
+                        ),),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                            validator: (value){
+                              if (value==null||value.isEmpty){
+                                return 'Please Enter Email';
+                              }
+                              return null;
+                            },
+                            controller: emailcontroller,
                           decoration:InputDecoration(
-
-                              hintText: 'Password ',
-                              border: OutlineInputBorder(
-
-                                  borderRadius: BorderRadius.circular(10)
-                              )
+                           hintText: 'Enter Your Email ',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)
+                            )
                           )
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            height:56,
-                            width: 353,
-                            child: TextButton(
-                                child:Text('Log in',style: TextStyle(fontSize: 16)),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text("Password" ,style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Poppins'
 
-                                style: ButtonStyle(
 
-                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10.0),
+                        ),),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                            validator: (value){
+                              if (value==null||value.isEmpty){
+                                return 'Please Enter Password';
+                              }
+                              return null;
+                            },
+                            controller: passcontroller,
+                            obscureText: true,
+                            decoration:InputDecoration(
 
-                                        )
-                                    )
-                                ),
-                                onPressed:(){
-                                  Navigator.pushNamed(context, 'signup');
-                                }),
-                          )
-                        ],
-                      )
+                                hintText: 'Password ',
+                                border: OutlineInputBorder(
 
-                    ],
-                 )
+                                    borderRadius: BorderRadius.circular(10)
+                                )
+                            )
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              height:56,
+                              width: 353,
+                              child: TextButton(
+                                  child:Text('Log in',style: TextStyle(fontSize: 16)),
+
+                                  style: ButtonStyle(
+
+                                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+
+                                          )
+                                      )
+                                  ),
+                                  onPressed:(){
+                                    if(_formkey.currentState!.validate()){
+                                      setState(() {
+                                        emaillogin=emailcontroller.text;
+                                        passlogin=passcontroller.text;
+
+                                      });
+                                    }
+                                    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Checker')));
+
+                                    login();
+                                    // Navigator.pushNamed(context, 'signup');
+                                  }),
+                            )
+                          ],
+                        )
+
+                      ],
+                   )
+                 ),
                ),
              )
            ],

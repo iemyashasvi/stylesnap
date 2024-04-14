@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stylesnap/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 class SignUp extends StatefulWidget {
@@ -22,7 +21,7 @@ class _SignUpState extends State<SignUp> {
     if (pass!=null && namecontroller.text!="" && emailcontroller.text!=""){
       try{
         UserCredential userCredential=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pass);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Regestered Successfully')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Registered Successfully')));
       }on FirebaseAuthException catch(e){
         if (e.code=="weak-password"){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Too weak Password')));
