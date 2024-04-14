@@ -167,6 +167,14 @@ class _MyLoginState extends State<MyLogin> {
                                   }),
                             )
                           ],
+                        ),
+                        Container(
+                          child: TextButton(
+                            child: Text("home"),
+                            onPressed:(){
+                              Navigator.pushNamed(context, 'homescreen');
+                            } ,
+                          ),
                         )
 
                       ],

@@ -1,4 +1,7 @@
+// import 'dart:js';
+
 import 'package:flutter/material.dart';
+import 'package:stylesnap/home.dart';
 import 'package:stylesnap/login.dart';
 import 'package:stylesnap/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,6 +16,8 @@ void main() async{
       routes: {
         'login': (context) => MyLogin(),
         'signup':(context) =>SignUp(),
+        'homescreen':(context) =>HomeScreen()
+
 
 
       }
