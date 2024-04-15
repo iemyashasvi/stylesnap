@@ -6,4 +6,22 @@ class AppWidget{
         fontFamily: 'Poppins'
     );
   }
+  static ButtonStyle tipsFeildStyle(){
+    return ButtonStyle(
+
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+
+            )
+        )
+    );
+  }
+  static SizedBox SizeBox(width){
+    return SizedBox(
+      height: width,
+    );
+}
 }
