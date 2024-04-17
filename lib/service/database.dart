@@ -5,16 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 
 
-class DatabaseMethods{
-  static getcollection(){
-    User? user = FirebaseAuth.instance.currentUser;
-    // return FirebaseFirestore.instance.collection("Clothes").doc(user.ge)
+class FirestoreService{
+  final CollectionReference clothes=FirebaseFirestore.instance.collection('clothes');
 
+  Stream<QuerySnapshot> getclothesstream(){
+    final clothesstream =clothes.orderBy('timestamp',descending: true).snapshots();
+
+    return clothesstream;
 
   }
-  Future addcloth(Map<String,dynamic> clothinfomap ,String id)async{
-  return await FirebaseFirestore.instance.collection("Cloth").doc(id).set(clothinfomap);
-
-
-}
 }

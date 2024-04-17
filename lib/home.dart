@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
            Map<String, dynamic> clothData = {
-
+              'timestamp':Timestamp.now(),
              'type': mytext.split(',')[0].substring(2, mytext.split(',')[0].length), // Extract cloth type from response
              'color': mytext.split(',')[1], // Extract color from response
              'classification': mytext.split(',')[2], // Extract classification from response
@@ -257,6 +257,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
+                  SizedBox(
+                    child: TextButton(
+                      child: Text("test"),
+                      onPressed: (){
+                        Navigator.pushNamed(context, 'wardrobe');
+
+                      },
+                    ),
+                  ),
+
 
 
 
