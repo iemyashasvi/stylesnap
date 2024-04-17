@@ -21,7 +21,18 @@ class _MyLoginState extends State<MyLogin> {
           password: passlogin
 
       );
+      User? user = FirebaseAuth.instance.currentUser;
+
+      bool isEmailverified=false;
+      isEmailverified=FirebaseAuth.instance.currentUser!.emailVerified;
+      if (isEmailverified){
+
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Signed In')));
+      Navigator.pushNamed(context, 'homescreen');}
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Verify Your Email and Try again')));
+      }
 
       }on FirebaseAuthException catch (e){
         if (e.code == 'user-not-found'){
@@ -163,6 +174,7 @@ class _MyLoginState extends State<MyLogin> {
                                     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Checker')));
 
                                     login();
+
                                     // Navigator.pushNamed(context, 'signup');
                                   }),
                             )
@@ -170,9 +182,9 @@ class _MyLoginState extends State<MyLogin> {
                         ),
                         Container(
                           child: TextButton(
-                            child: Text("home"),
+                            child: Text("Signup"),
                             onPressed:(){
-                              Navigator.pushNamed(context, 'homescreen');
+                              Navigator.pushNamed(context, 'signup');
                             } ,
                           ),
                         )

@@ -21,7 +21,15 @@ class _SignUpState extends State<SignUp> {
     if (pass!=null && namecontroller.text!="" && emailcontroller.text!=""){
       try{
         UserCredential userCredential=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pass);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Registered Successfully')));
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user!= null && !user.emailVerified) {
+          await user.sendEmailVerification();
+        }
+
+        await ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Registered Successfully , Check Email to Verify')));
+        FirebaseAuth.instance.signOut();
+
+        Navigator.pushNamed(context, 'login');
       }on FirebaseAuthException catch(e){
         if (e.code=="weak-password"){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Too weak Password')));
@@ -184,9 +192,10 @@ class _SignUpState extends State<SignUp> {
                                       name=namecontroller.text;
                                     });
                                   }
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Btn')));
+                                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Btn')));
 
                                   registration();
+
 
 
 
