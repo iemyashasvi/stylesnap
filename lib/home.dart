@@ -80,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
            Map<String, dynamic> clothData = {
+
               'timestamp':Timestamp.now(),
              'type': mytext.split(',')[0].substring(2, mytext.split(',')[0].length), // Extract cloth type from response
              'color': mytext.split(',')[1], // Extract color from response
@@ -266,6 +267,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
+                  TextButton(onPressed: ()async{
+                    await FirebaseAuth.instance.signOut();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Signed Out')));
+                    Navigator.pushNamed(context, 'login');
+
+
+                  }, child: Text('SIgnOUT'))
 
 
 

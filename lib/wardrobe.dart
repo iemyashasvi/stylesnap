@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:stylesnap/service/database.dart';
+import 'details.dart';
 
 class Wardrobe extends StatefulWidget {
   const Wardrobe({super.key});
@@ -12,6 +13,8 @@ class Wardrobe extends StatefulWidget {
 
 class _WardrobeState extends State<Wardrobe> {
   final FirestoreService firestoreService=FirestoreService();
+  DocumentSnapshot? _selectedClothing;
+
   @override
   Widget build(BuildContext context) {
 
@@ -32,7 +35,8 @@ class _WardrobeState extends State<Wardrobe> {
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 300,
                     mainAxisSpacing: 20,
-                    crossAxisSpacing: 0
+                    crossAxisSpacing: 0,
+
                 ),
 
 
@@ -48,40 +52,54 @@ class _WardrobeState extends State<Wardrobe> {
                     String color=data['color'];
                     String url=data['imageUrl'];
 
+
+
+
                     // return ListTile(
                     //   leading: Image.network(url),
                     //   title: Text(type),
                     //   subtitle: Text(description),
                     // );
-                    return SizedBox(
-                      width: (MediaQuery.of(context).size.width)/2.9,
-                      height: 200,
+                    return GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          _selectedClothing = document;// Update selected item on tap
 
-                      child: Container(
-                        margin: EdgeInsets.only(left: 20.0,right: 20.0),
-                        child:Column(
-
-
-                            children: [
-                              Image.network(url,width: 125,height: 144),
-                              Text(color),
-                              Text(type),
-                            ],
-
+                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ClothingDetailsPage(clothing: document),
                           ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(color: Colors.black),
+                        );
 
 
+                      },
+                      child: SizedBox(
+                        width: (MediaQuery.of(context).size.width)/2.9,
+                        height: 200,
+                      
+                        child: Container(
+                      
+                          margin: EdgeInsets.only(left: 20.0,right: 20.0),
+                          child:Column(
+                      
+                      
+                              children: [
+                                Image.network(url,width: 125,height: 144),
+                                Text(color),
+                                Text(type),
+                      
+                              ],
+                            ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(color: Colors.black),
+                      
+                          ),
                         ),
-
-
                       ),
                     );
-
-
-
                   }
               );
             }

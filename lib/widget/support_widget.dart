@@ -23,5 +23,13 @@ class AppWidget{
     return SizedBox(
       height: width,
     );
-}
+  }
+  static TextStyle boldTextStyle(size,r,g,b,opacity){
+    return TextStyle(
+      fontSize:size,
+      fontFamily: 'Poppins',
+      color: Color.fromRGBO(r, g, b, opacity)
+
+    );
+  }
 }

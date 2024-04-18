@@ -14,4 +14,7 @@ class FirestoreService{
     return clothesstream;
 
   }
+  Future<void> deletecloth(String docid){
+    return clothes.doc(docid).delete();
+  }
 }
