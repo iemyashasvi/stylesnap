@@ -4,6 +4,7 @@ import 'service/database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 
+
 class ClothingDetailsPage extends StatelessWidget {
   final DocumentSnapshot clothing;
 
@@ -56,13 +57,15 @@ class ClothingDetailsPage extends StatelessWidget {
               await firestoreService.deletecloth(id);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Deleted')));
               Navigator.pushNamed(context, 'wardrobe');
-
+            }
+            , child: Text('Delete Item')),
+            TextButton(onPressed: ()async{
+              firestoreService.getUpperwearData().then((data) {
+                print(data); // This will print the combined text string
+              });
 
             }
-
-
-
-                , child: Text('Delete Item'))
+            , child: Text('Match'))
           ],
         ),
       ),

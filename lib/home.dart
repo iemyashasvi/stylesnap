@@ -82,10 +82,10 @@ class _HomeScreenState extends State<HomeScreen> {
            Map<String, dynamic> clothData = {
 
               'timestamp':Timestamp.now(),
-             'type': mytext.split(',')[0].substring(2, mytext.split(',')[0].length), // Extract cloth type from response
-             'color': mytext.split(',')[1], // Extract color from response
-             'classification': mytext.split(',')[2], // Extract classification from response
-             'description': mytext.split(',').last.substring(0,mytext.split(',').last.length-1), // Extract classification from response
+             'type': mytext.split(',')[0].substring(2, mytext.split(',')[0].length).trim(), // Extract cloth type from response
+             'color': mytext.split(',')[1].trim(), // Extract color from response
+             'classification': mytext.split(',')[2].trim(), // Extract classification from response
+             'description': mytext.split(',').last.substring(0,mytext.split(',').last.length-1).trim(), // Extract classification from response
              'imageUrl': await uploadImage(image), // Upload image and get URL (see below)
            };
            await firestore.collection('clothes').add(clothData);
