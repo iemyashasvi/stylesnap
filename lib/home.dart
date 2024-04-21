@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'service/requests.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -84,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
               'timestamp':Timestamp.now(),
              'type': mytext.split(',')[0].substring(2, mytext.split(',')[0].length).trim(), // Extract cloth type from response
              'color': mytext.split(',')[1].trim(), // Extract color from response
-             'classification': mytext.split(',')[2].trim(), // Extract classification from response
+             'classification': mytext.split(',')[2].trim().toLowerCase(), // Extract classification from response
              'description': mytext.split(',').last.substring(0,mytext.split(',').last.length-1).trim(), // Extract classification from response
              'imageUrl': await uploadImage(image), // Upload image and get URL (see below)
            };
@@ -273,7 +274,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.pushNamed(context, 'login');
 
 
-                  }, child: Text('SIgnOUT'))
+                  }, child: Text('SIgnOUT')),
+
 
 
 
