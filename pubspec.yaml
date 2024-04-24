@@ -45,6 +45,7 @@ dependencies:
   cloud_firestore: ^4.15.8
   firebase_storage: ^11.6.9
   google_generative_ai: ^0.3.1
+  iconoir_flutter: ^7.6.0
 
 dev_dependencies:
   flutter_test:

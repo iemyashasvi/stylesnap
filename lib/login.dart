@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:stylesnap/widget/support_widget.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({super.key});
@@ -147,8 +148,9 @@ class _MyLoginState extends State<MyLogin> {
                         Row(
                           children: [
                             SizedBox(
-                              height:56,
-                              width: 353,
+                              height: MediaQuery.of(context).size.height* .07,
+
+                              width: MediaQuery.of(context).size.width* .87,
                               child: TextButton(
                                   child:Text('Log in',style: TextStyle(fontSize: 16)),
 
@@ -177,12 +179,18 @@ class _MyLoginState extends State<MyLogin> {
 
                                     // Navigator.pushNamed(context, 'signup');
                                   }),
-                            )
+                            ),
+                            Divider(),
+
                           ],
                         ),
+                        AppWidget.SizeBox(15.0),
+
+                        Divider(),
+                        AppWidget.SizeBox( MediaQuery.of(context).size.height* .25,),
                         Container(
                           child: TextButton(
-                            child: Text("Signup"),
+                            child: Text("Not a User ? Signup"),
                             onPressed:(){
                               Navigator.pushNamed(context, 'signup');
                             } ,

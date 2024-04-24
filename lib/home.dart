@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'service/requests.dart';
 
 
@@ -178,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             decoration:InputDecoration(
                                 contentPadding: EdgeInsets.zero,
-                                hintText: 'Seach',
+                                hintText: 'Search',
 
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(23)
@@ -242,32 +243,47 @@ class _HomeScreenState extends State<HomeScreen> {
                   AppWidget.SizeBox(15.0),
                   Divider(),
                   AppWidget.SizeBox(15.0),
-                  SizedBox(
-                    child: TextButton(
-                      child: Text("Camera"),
-                      onPressed: ()=> pickImage(),
-                    ),
+                  Container(
+                    child:SizedBox(
+                      height:MediaQuery.of(context).size.height *.13 ,
+                      width: MediaQuery.of(context).size.width* .85,
+                      child: TextButton(
+                        child:Text('Add Outfit'),
+                        style: AppWidget.tipsFeildStyle(),
+                        onPressed: ()=>pickImage(),
+                      ),
+                    )
                   ),
+                  AppWidget.SizeBox(15.0),
+                  Divider(),
                   image!=null ? Image.file(image!): Image.asset('assets/Logobig.png'),
 
                   SizedBox(
                     child: TextButton(
-                      child: Text("Add to Database"),
+                      child: Text("Add to Wardrobe"),
                       onPressed: (){
                         getdata(image!, promptValue);
 
                       },
                     ),
                   ),
+                  Divider(),
+                  AppWidget.SizeBox(15.0),
                   SizedBox(
+                    height: MediaQuery.of(context).size.height* .07,
+                    width: MediaQuery.of(context).size.width* .85,
                     child: TextButton(
-                      child: Text("test"),
+                      child: Text("My Wardrobe"),
+                      style: AppWidget.tipsFeildStyle(),
                       onPressed: (){
                         Navigator.pushNamed(context, 'wardrobe');
 
                       },
                     ),
                   ),
+                  AppWidget.SizeBox(15.0),
+                  Divider(),
+                  AppWidget.SizeBox(15.0),
                   TextButton(onPressed: ()async{
                     await FirebaseAuth.instance.signOut();
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Signed Out')));

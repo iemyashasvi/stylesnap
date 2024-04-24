@@ -73,7 +73,17 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              Image.network(url),
+
+              Container(child: SizedBox(
+                width: MediaQuery.of(context).size.width*.8,
+                  height: MediaQuery.of(context).size.height*.4,
+                  child: Image.network(url)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(color: Colors.black),
+
+                ),
+              ),
               const SizedBox(height: 20.0),
               Text(
                 "Color: $color",
@@ -102,6 +112,8 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                 },
                 child: Text('Delete Item'),
               ),
+              Divider(),
+              SizedBox(height: 40.0,),
               FutureBuilder<void>(
                 future: Future.delayed(Duration(seconds: 15), () {
                   print(secondIds.length);
@@ -116,18 +128,25 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                       itemBuilder: (context, index) {
-                        return SizedBox(
-                          height: 165,
-                          width: 183,
-                          child: Container(
-                            child: Column(
-                              children: [
-                                Image.network(links[index], width: 125, height: 144),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              border: Border.all(color: Colors.black),
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: 165,
+                            width: 183,
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                    child: Image.network(links[index], width: 125, height: 144),
+                                  ),
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                border: Border.all(color: Colors.black),
+
+                              ),
                             ),
                           ),
                         );
