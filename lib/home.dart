@@ -76,14 +76,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
            var result=jsonDecode(response.body);
            mytext=result['candidates'][0]['content']['parts'][0]['text'];
+           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Got Context of the cloth')));
+
            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mytext)));
            print(mytext);
            print(mytext.runtimeType);
 
 
            Map<String, dynamic> clothData = {
-
-              'timestamp':Timestamp.now(),
+             'userId': FirebaseAuth.instance.currentUser!.uid, // Associate data with current user
+             'timestamp':Timestamp.now(),
              'type': mytext.split(',')[0].substring(2, mytext.split(',')[0].length).trim(), // Extract cloth type from response
              'color': mytext.split(',')[1].trim(), // Extract color from response
              'classification': mytext.split(',')[2].trim().toLowerCase(), // Extract classification from response
@@ -91,6 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
              'imageUrl': await uploadImage(image), // Upload image and get URL (see below)
            };
            await firestore.collection('clothes').add(clothData);
+           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added Successfully')));
+
            // print(mytext);
            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mytext)));
 
@@ -263,6 +267,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text("Add to Wardrobe"),
                       onPressed: (){
                         getdata(image!, promptValue);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Adding To Wardrobe')));
+
 
                       },
                     ),
@@ -276,6 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text("My Wardrobe"),
                       style: AppWidget.tipsFeildStyle(),
                       onPressed: (){
+
                         Navigator.pushNamed(context, 'wardrobe');
 
                       },

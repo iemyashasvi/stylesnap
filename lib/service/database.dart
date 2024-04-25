@@ -3,13 +3,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// final user = FirebaseAuth.instance.currentUser;
 
 
 class FirestoreService{
   final CollectionReference clothes=FirebaseFirestore.instance.collection('clothes');
 
   Stream<QuerySnapshot> getclothesstream(){
-    final clothesstream =clothes.orderBy('timestamp',descending: true).snapshots();
+    final user = FirebaseAuth.instance.currentUser;
+
+    final clothesstream = clothes.where('userId', isEqualTo: user!.uid).orderBy('timestamp', descending: true).snapshots();
+
+    // final clothesstream =clothes.orderBy('timestamp',descending: true).snapshots();
 
     return clothesstream;
 
@@ -18,7 +23,9 @@ class FirestoreService{
     return clothes.doc(docid).delete();
   }
   dynamic  getlist(){
-    Query query=clothes.where('classification',isEqualTo: 'lower wear');
+    final user = FirebaseAuth.instance.currentUser;
+
+    Query query=clothes.where('classification',isEqualTo: 'lower wear').where('userId', isEqualTo: user!.uid);
     query.get().then((QuerySnapshot querySnapshot){
       final users = [];
       for (var doc in querySnapshot.docs) {
@@ -32,10 +39,13 @@ class FirestoreService{
     });
 
   }
-  Future<String> getUpperwearData() async {
+  Future<String> getUpperwearData(category) async {
+    final user = FirebaseAuth.instance.currentUser;
+
     final firestore = FirebaseFirestore.instance;
     final upperWearCollection = firestore.collection('clothes');
-    final upperWearQuery = upperWearCollection.where('classification', isEqualTo: 'Lower wear');
+    final upperWearQuery = upperWearCollection.where('classification', isEqualTo: category).where('userId', isEqualTo: user!.uid);
+    print(user!.uid);
 
     final snapshot = await upperWearQuery.get();
 

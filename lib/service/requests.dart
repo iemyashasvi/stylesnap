@@ -19,7 +19,39 @@ class SendRequest{
     if (classification.toLowerCase()=='upper wear'){
 
 
-      firestoreService.getUpperwearData().then((data)async {
+      firestoreService.getUpperwearData('lowerwear').then((data)async {
+        // print(data);
+        String ids='';
+
+        String? response='';
+        String format='id : original cloth ,id : matched cloth1 ';
+
+        String txt='I have a  $type which is $color in color with $id and looks like $description and  I have few lowerwear , whose details are these'+'$data'+'recommend 5 outfit from  the first outfit and the given lowerwear  , in this format $format  add,only one lowerwear per outfit , strictly adhere to format for the result,return only none if none is matching';
+
+        response= await getreq(txt);
+
+
+
+        List<String> pairs = response!.split("\n");
+
+        pairs.forEach((pair) {
+
+          List<String> parts=pair!.split(',');
+          String secondPart = parts[1].trim();
+          String secondId = secondPart.split(":")[1].trim();
+          secondIds.add(secondId);
+
+        });
+        print("HHH");
+        print(secondIds);
+        // return(secondIds);
+        // This will print the combined text string
+      });
+    }
+    else if (classification.toLowerCase()=='lower wear'){
+
+
+      firestoreService.getUpperwearData('upper wear').then((data)async {
         // print(data);
         String ids='';
 
