@@ -18,12 +18,29 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
   final FirestoreService firestoreService = FirestoreService();
   final SendRequest sendRequest = SendRequest();
   late List<String> links;
+  late List<String> urls=[];
 
   @override
   void initState() {
+
     super.initState();
-    _fetchData();
+
+    Map<String, dynamic> data = widget.clothing.data()! as Map<String, dynamic>;
+    String classification = data['classification'];
+    _getlinks(classification);
+    // _fetchData();
     print("hy");
+  }
+  Future<void> _getlinks(classification)async{
+    if (classification=='upper wear'){
+      var id = widget.clothing.id;
+      urls= await firestoreService.getData('lower wear');
+
+    }
+    else{
+      var id = widget.clothing.id;
+      urls= await firestoreService.getData('upper wear');
+    }
   }
 
   Future<void> _fetchData() async {
@@ -45,6 +62,7 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
         String path = secondIds[i];
         links.add(await firestoreService.getimgurl(path));
           }
+
       print(secondIds);
       // Your code to be executed after 7 seconds
     });
@@ -115,7 +133,7 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
               Divider(),
               SizedBox(height: 40.0,),
               FutureBuilder<void>(
-                future: Future.delayed(Duration(seconds: 15), () {
+                future: Future.delayed(Duration(seconds: 10), () {
                   print(secondIds.length);
                 }),
                 builder: (context, snapshot) {
@@ -124,7 +142,8 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                   } else {
                     return GridView.builder(
 
-                      itemCount: links.length,
+
+                      itemCount: urls.length,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                       itemBuilder: (context, index) {
@@ -138,7 +157,7 @@ class _ClothingDetailsPageState extends State<ClothingDetailsPage> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                    child: Image.network(links[index], width: 125, height: 144),
+                                    child: Image.network(urls[index], width: 125, height: 144),
                                   ),
                                 ],
                               ),

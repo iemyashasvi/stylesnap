@@ -1,5 +1,7 @@
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class SendRequest{
   final FirestoreService firestoreService=FirestoreService();
@@ -19,12 +21,13 @@ class SendRequest{
     if (classification.toLowerCase()=='upper wear'){
 
 
-      firestoreService.getUpperwearData('lowerwear').then((data)async {
+      firestoreService.getUpperwearData('lower wear').then((data)async {
         // print(data);
         String ids='';
 
         String? response='';
         String format='id : original cloth ,id : matched cloth1 ';
+
 
         String txt='I have a  $type which is $color in color with $id and looks like $description and  I have few lowerwear , whose details are these'+'$data'+'recommend 5 outfit from  the first outfit and the given lowerwear  , in this format $format  add,only one lowerwear per outfit , strictly adhere to format for the result,return only none if none is matching';
 
@@ -62,10 +65,7 @@ class SendRequest{
 
         response= await getreq(txt);
 
-
-
         List<String> pairs = response!.split("\n");
-
         pairs.forEach((pair) {
 
           List<String> parts=pair!.split(',');
@@ -83,4 +83,22 @@ class SendRequest{
     return(secondIds);
 
   }
+  // Future <List<String>>getclothes(category)async{
+  //   if (category.toLowerCase()=='upper wear'){
+  //     final firestore = FirebaseFirestore.instance;
+  //     final upperWearCollection = firestore.collection('clothes');
+  //     final upperWearQuery = upperWearCollection.where('classification', isEqualTo: category).where('userId', isEqualTo: user!.uid);
+  //     final snapshot = await upperWearQuery.get();
+  //
+  //
+  //
+  //
+  //   }
+  //   else{
+  //
+  //   }
+  //   }
+
+
+
 }

@@ -76,6 +76,25 @@ class FirestoreService{
     return url;
 
   }
+  Future<List<String>> getData(category) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    final firestore = FirebaseFirestore.instance;
+    final upperWearCollection = firestore.collection('clothes');
+    final upperWearQuery = upperWearCollection.where('classification', isEqualTo: category).where('userId', isEqualTo: user!.uid);
+    print(user!.uid);
+
+    final snapshot = await upperWearQuery.get();
+
+    List<String> links=[];
+    final buffer = StringBuffer();
+    for (final doc in snapshot.docs) {
+      final url=doc.data()['imageUrl'];
+      links.add(url);
+    }
+    return links;
+
+  }
 
 
 
